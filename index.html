@@ -1,1 +1,138 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Battle Arena</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#17221b;color:white;font-family:Arial;text-align:center}
+h2{margin:12px}
+#game{display:block;width:100%;height:65vh;background:#344c35;touch-action:none}
+.controls{display:flex;justify-content:space-around;align-items:center;padding:12px}
+button{font-size:20px;padding:16px;border:0;border-radius:12px;background:#e7c44b}
+#shoot{background:#e74c3c;color:white}
+</style>
+</head>
+<body>
+<h2>🔥 BATTLE ARENA 🔥</h2>
+<p>Score: <span id="score">0</span> | Health: <span id="hp">100</span></p>
+<canvas id="game"></canvas>
+<div class="controls">
+<button id="left">⬅️</button>
+<button id="up">⬆️</button>
+<button id="down">⬇️</button>
+<button id="right">➡️</button>
+<button id="shoot">FIRE 🔫</button>
+</div>
+<p id="msg">Move and shoot the enemies!</p>
+<button id="restart" hidden>Play Again</button>
+<script>
+const c=document.getElementById("game");
+const ctx=c.getContext("2d");
+let W,H,player,enemies,bullets,score,hp,over,keys={};
+function resize(){
+const r=c.getBoundingClientRect();
+c.width=r.width*devicePixelRatio;
+c.height=r.height*devicePixelRatio;
+ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+W=r.width;H=r.height;
+}
+function start(){
+resize();
+player={x:W/2,y:H/2,r:13};
+enemies=[];bullets=[];score=0;hp=100;over=false;
+document.getElementById("restart").hidden=true;
+document.getElementById("msg").textContent="Move and shoot the enemies!";
+updateText();
+}
+function updateText(){
+document.getElementById("score").textContent=score;
+document.getElementById("hp").textContent=hp;
+}
+function spawn(){
+if(!over && enemies.length<9){
+let side=Math.floor(Math.random()*4),x,y;
+if(side===0){x=0;y=Math.random()*H}
+else if(side===1){x=W;y=Math.random()*H}
+else if(side===2){x=Math.random()*W;y=0}
+else{x=Math.random()*W;y=H}
+enemies.push({x,y,r:12});
+}
+}
+function fire(){
+if(over)return;
+let target=null,best=Infinity;
+for(const e of enemies){
+let d=Math.hypot(e.x-player.x,e.y-player.y);
+if(d<best){best=d;target=e}
+}
+if(target){
+let d=Math.hypot(target.x-player.x,target.y-player.y)||1;
+bullets.push({x:player.x,y:player.y,
+vx:(target.x-player.x)/d*7,
+vy:(target.y-player.y)/d*7});
+}
+}
+function end(){
+over=true;
+document.getElementById("msg").textContent="Game Over! Score: "+score;
+document.getElementById("restart").hidden=false;
+}
+function draw(){
+ctx.clearRect(0,0,W,H);
+ctx.strokeStyle="#49694b";ctx.lineWidth=1;
+for(let x=0;x<W;x+=35){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+for(let y=0;y<H;y+=35){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+if(!over){
+let dx=(keys.right?1:0)-(keys.left?1:0);
+let dy=(keys.down?1:0)-(keys.up?1:0);
+let len=Math.hypot(dx,dy)||1;
+player.x=Math.max(14,Math.min(W-14,player.x+dx/len*3));
+player.y=Math.max(14,Math.min(H-14,player.y+dy/len*3));
+}
+ctx.fillStyle="#39c5ff";
+ctx.beginPath();ctx.arc(player.x,player.y,player.r,0,Math.PI*2);ctx.fill();
+ctx.fillStyle="white";ctx.fillRect(player.x-4,player.y-4,8,8);
+for(let i=enemies.length-1;i>=0;i--){
+let e=enemies[i];
+if(!over){
+let d=Math.hypot(player.x-e.x,player.y-e.y)||1;
+e.x+=(player.x-e.x)/d*.75;e.y+=(player.y-e.y)/d*.75;
+if(d<player.r+e.r){hp-=0.25;if(hp<=0){hp=0;end()}}
+}
+ctx.fillStyle="#f04b42";ctx.beginPath();ctx.arc(e.x,e.y,e.r,0,Math.PI*2);ctx.fill();
+}
+for(let i=bullets.length-1;i>=0;i--){
+let b=bullets[i];b.x+=b.vx;b.y+=b.vy;
+ctx.fillStyle="#ffe45c";ctx.beginPath();ctx.arc(b.x,b.y,4,0,Math.PI*2);ctx.fill();
+let hit=false;
+for(let j=enemies.length-1;j>=0;j--){
+let e=enemies[j];
+if(Math.hypot(b.x-e.x,b.y-e.y)<e.r+5){
+enemies.splice(j,1);score++;hit=true;updateText();break;
+}
+}
+if(hit||b.x<0||b.x>W||b.y<0||b.y>H)bullets.splice(i,1);
+}
+updateText();
+if(!over)requestAnimationFrame(draw);
+else{
+ctx.fillStyle="rgba(0,0,0,.6)";ctx.fillRect(0,0,W,H);
+ctx.fillStyle="white";ctx.font="bold 28px Arial";
+ctx.fillText("GAME OVER",W/2-85,H/2);
+}
+}
+["up","down","left","right"].forEach(id=>{
+const b=document.getElementById(id);
+b.addEventListener("pointerdown",e=>{e.preventDefault();keys[id]=true});
+["pointerup","pointercancel","pointerleave"].forEach(ev=>
+b.addEventListener(ev,()=>keys[id]=false));
+});
+document.getElementById("shoot").addEventListener("pointerdown",fire);
+document.getElementById("restart").addEventListener("click",()=>{start();draw()});
+start();setInterval(spawn,1200);draw();
+</script>
+</body>
+</html>
