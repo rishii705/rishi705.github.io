@@ -1119,6 +1119,12 @@ document.getElementById('loginTop').textContent =
 
 </body>
 </html>
+
+renderMatches();
+updateStats();
+
+document.getElementById('loginTop').textContent =
+  profile.name ? profile.name.split(' ')[0] : 'Sign in';
 </script>
 </body>
 </html>
