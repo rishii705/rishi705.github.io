@@ -1,577 +1,105 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Battle Zone</title>
+MAXBET
+SPORTS • LIVE SCORES • FREE GAMES
+DEMO MODESign in
 
-<style>
-* {
-  box-sizing: border-box;
-}
+Main menu
+⌂   Home 🏏   Cricket ⚽   Football 🎮   Free games 📋   My predictions
+Workspace
+🤝   Agent demo 👑   Admin demo 👤   Account
+WELCOME TO THE ARENA
+Every match. Every moment.
+Follow sports, explore match cards, make friendly predictions and play free mini-games. This demo uses virtual points only—no deposits, wagering or cash-out.
 
-body {
-  margin: 0;
-  background: #101820;
-  color: white;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  touch-action: none;
-}
+Demo matches6
+Your virtual points1,000
+Predictions made0
 
-#hud {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 12px 5px;
-  background: #182733;
-  font-size: 13px;
-  font-weight: bold;
-}
+Featured matches
+Sample data • not live
 
-#arena {
-  display: block;
-  width: 100%;
-  background: #203b30;
-}
+Quick play
+Free mini-games
 
-#controls {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 5px;
-  gap: 5px;
-}
 
-button {
-  background: #263b4a;
-  color: white;
-  border: 1px solid #92a7b7;
-  border-radius: 10px;
-  padding: 12px;
-  font-weight: bold;
-  touch-action: none;
-}
+🎯
+Lucky Number
+Pick a number from 1–6 and try your luck. Free to play.
+Play round
 
-.pad {
-  display: grid;
-  grid-template-columns: 42px 42px 42px;
-  gap: 4px;
-}
 
-.pad button {
-  padding: 8px 0;
-}
+🧠
+Sports Quiz
+Answer a quick sports question for virtual points.
+Start quiz
 
-.blank {
-  visibility: hidden;
-}
 
-#fire {
-  background: #b52b35;
-  width: 68px;
-  height: 68px;
-  border-radius: 50%;
-}
+🏏 Cricket
+Sample fixtures
 
-#reload {
-  background: #8a5b16;
-}
+⚽ Football
+Sample fixtures
 
-#message {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000c;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 10;
-}
-</style>
-</head>
+🎮 Free games
+Virtual points only
 
-<body>
 
-<div id="hud">
-  <span>SCORE: <span id="score">0</span></span>
-  <span>❤️ <span id="health">100</span></span>
-  <span>🔫 <span id="ammo">12</span>/<span id="reserve">60</span></span>
-</div>
+🎯
+Lucky Number
+Choose a random number and see the result.
+Play round
 
-<canvas id="arena"></canvas>
 
-<div id="controls">
+🧠
+Sports Quiz
+Answer a quick sports question.
+Start quiz
 
-  <div class="pad">
-    <button class="blank"> </button>
-    <button data-move="up">▲</button>
-    <button class="blank"> </button>
 
-    <button data-move="left">◀</button>
-    <button data-move="down">▼</button>
-    <button data-move="right">▶</button>
-  </div>
+📋 My predictions
+Saved on this device
 
-  <button id="reload">RELOAD</button>
-  <button id="fire">FIRE</button>
+No predictions yet. Open a match and choose a team.
 
-</div>
+Agent workspace
+Preview-only management screen. Real user accounts and secure permissions require a backend.
+Demo mode: this page does not create real agents or manage other people's accounts.
 
-<div id="message">
-  <h1>GAME OVER</h1>
-  <p id="finalScore"></p>
-  <button onclick="location.reload()">PLAY AGAIN</button>
-</div>
+Sample users24
+Sample sub-agents3
+Reports6
 
-<script>
-const canvas = document.getElementById("arena");
-const ctx = canvas.getContext("2d");
+Sample user activity
 
-const scoreEl = document.getElementById("score");
-const healthEl = document.getElementById("health");
-const ammoEl = document.getElementById("ammo");
-const reserveEl = document.getElementById("reserve");
+User ID
+Status
+Activity
+MB-DEMO-001
+Active
+Viewed cricket
+MB-DEMO-002
+Active
+Played free game
+MB-DEMO-003
+Inactive
+Last seen recently
 
-let W, H;
-let score = 0;
-let health = 100;
-let ammo = 12;
-let reserve = 60;
-let gameOver = false;
 
-let enemies = [];
-let bullets = [];
-let keys = {};
+Admin control center
+Preview dashboard for content and demo activity. No real access control is implemented in this single-file prototype.
+Important: this admin screen is a visual prototype, not a secure production admin panel. Do not put real user data or passwords here.
 
-const player = {
-  x: 150,
-  y: 150,
-  r: 14,
-  speed: 190,
-  invulnerable: 0
-};
+Demo users24
+Fixture cards6
+Platform statusDemo
 
-let lastTime = 0;
-let spawnTimer = 0;
-let fireCooldown = 0;
-let reloadTimer = 0;
+Manage sample fixtures
+This button refreshes the sample match cards on this page.
+Refresh fixtures
 
-function resize() {
-  const rect = canvas.getBoundingClientRect();
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+👤 Account
+Local demo profile
 
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
+This prototype stores a display name and demo predictions only in your browser. It does not provide real secure login yet.
+Display nameDemo roleUserAgent previewAdmin previewSave demo profileReset demo data
 
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  W = rect.width;
-  H = rect.height;
-
-  if (!player.x) player.x = W / 2;
-  if (!player.y) player.y = H / 2;
-
-  player.x = Math.max(player.r, Math.min(W-player.r, player.x));
-  player.y = Math.max(player.r, Math.min(H-player.r, player.y));
-}
-
-function setLayout() {
-  const hud = document.getElementById("hud");
-  const controls = document.getElementById("controls");
-
-  canvas.style.height =
-    Math.max(180, window.innerHeight -
-    hud.offsetHeight - controls.offsetHeight) + "px";
-
-  resize();
-}
-
-window.addEventListener("resize", setLayout);
-setLayout();
-
-function updateHUD() {
-  scoreEl.textContent = score;
-  healthEl.textContent = health;
-  ammoEl.textContent = ammo;
-  reserveEl.textContent = reserve;
-}
-
-function spawnEnemy() {
-  const side = Math.floor(Math.random() * 4);
-  let x, y;
-
-  if (side === 0) {
-    x = 0;
-    y = Math.random() * H;
-  } else if (side === 1) {
-    x = W;
-    y = Math.random() * H;
-  } else if (side === 2) {
-    x = Math.random() * W;
-    y = 0;
-  } else {
-    x = Math.random() * W;
-    y = H;
-  }
-
-  enemies.push({
-    x: x,
-    y: y,
-    r: 13,
-    speed: 40 + Math.random() * 25,
-    hp: score >= 100 ? 2 : 1
-  });
-}
-
-function shoot() {
-  if (gameOver || reloadTimer > 0 || fireCooldown > 0) {
-    return;
-  }
-
-  if (ammo <= 0) {
-    reload();
-    return;
-  }
-
-  ammo--;
-  fireCooldown = 0.22;
-
-  let target = null;
-  let bestDistance = Infinity;
-
-  for (const enemy of enemies) {
-    const distance = Math.hypot(
-      enemy.x - player.x,
-      enemy.y - player.y
-    );
-
-    if (distance < bestDistance) {
-      bestDistance = distance;
-      target = enemy;
-    }
-  }
-
-  let dx = target ? target.x - player.x : 1;
-  let dy = target ? target.y - player.y : 0;
-
-  const length = Math.hypot(dx, dy) || 1;
-
-  bullets.push({
-    x: player.x,
-    y: player.y,
-    vx: dx / length * 430,
-    vy: dy / length * 430,
-    life: 0.65
-  });
-
-  updateHUD();
-}
-
-function reload() {
-  if (
-    gameOver ||
-    reloadTimer > 0 ||
-    ammo === 12 ||
-    reserve === 0
-  ) {
-    return;
-  }
-
-  reloadTimer = 1.1;
-  document.getElementById("reload").textContent =
-    "RELOADING...";
-}
-
-document.getElementById("fire").addEventListener(
-  "pointerdown",
-  function(e) {
-    e.preventDefault();
-    shoot();
-  }
-);
-
-document.getElementById("reload").addEventListener(
-  "pointerdown",
-  function(e) {
-    e.preventDefault();
-    reload();
-  }
-);
-
-document.querySelectorAll("[data-move]").forEach(button => {
-  const direction = button.dataset.move;
-
-  button.addEventListener("pointerdown", e => {
-    e.preventDefault();
-    keys[direction] = true;
-    button.setPointerCapture(e.pointerId);
-  });
-
-  function stop(e) {
-    e.preventDefault();
-    keys[direction] = false;
-  }
-
-  button.addEventListener("pointerup", stop);
-  button.addEventListener("pointercancel", stop);
-  button.addEventListener("lostpointercapture", stop);
-});
-
-window.addEventListener("keydown", e => {
-  if (e.key === "ArrowUp" || e.key.toLowerCase() === "w")
-    keys.up = true;
-
-  if (e.key === "ArrowDown" || e.key.toLowerCase() === "s")
-    keys.down = true;
-
-  if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a")
-    keys.left = true;
-
-  if (e.key === "ArrowRight" || e.key.toLowerCase() === "d")
-    keys.right = true;
-
-  if (e.code === "Space") shoot();
-  if (e.key.toLowerCase() === "r") reload();
-});
-
-window.addEventListener("keyup", e => {
-  if (e.key === "ArrowUp" || e.key.toLowerCase() === "w")
-    keys.up = false;
-
-  if (e.key === "ArrowDown" || e.key.toLowerCase() === "s")
-    keys.down = false;
-
-  if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a")
-    keys.left = false;
-
-  if (e.key === "ArrowRight" || e.key.toLowerCase() === "d")
-    keys.right = false;
-});
-
-function endGame() {
-  gameOver = true;
-
-  document.getElementById("finalScore").textContent =
-    "Your Score: " + score;
-
-  document.getElementById("message").style.display = "flex";
-}
-
-function draw() {
-  ctx.clearRect(0, 0, W, H);
-
-  ctx.fillStyle = "#203b30";
-  ctx.fillRect(0, 0, W, H);
-
-  // Map grid
-  ctx.strokeStyle = "#2d4a3c";
-  ctx.lineWidth = 1;
-
-  for (let x = 0; x < W; x += 36) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, H);
-    ctx.stroke();
-  }
-
-  for (let y = 0; y < H; y += 36) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(W, y);
-    ctx.stroke();
-  }
-
-  // Buildings / crates
-  ctx.fillStyle = "#72583b";
-
-  const crates = [
-    [W * 0.15, H * 0.20, 34, 28],
-    [W * 0.78, H * 0.25, 38, 30],
-    [W * 0.22, H * 0.72, 40, 28],
-    [W * 0.75, H * 0.73, 32, 34]
-  ];
-
-  crates.forEach(c => {
-    ctx.fillRect(c[0], c[1], c[2], c[3]);
-    ctx.strokeStyle = "#9d7a4e";
-    ctx.strokeRect(c[0], c[1], c[2], c[3]);
-  });
-
-  // Bullets
-  bullets.forEach(b => {
-    ctx.fillStyle = "#ffe76a";
-    ctx.beginPath();
-    ctx.arc(b.x, b.y, 3, 0, Math.PI * 2);
-    ctx.fill();
-  });
-
-  // Enemies
-  enemies.forEach(e => {
-    ctx.fillStyle = "#e44b4b";
-    ctx.beginPath();
-    ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
-    ctx.fill();
-
-    ctx.fillStyle = "white";
-    ctx.fillRect(e.x - 5, e.y - 3, 3, 3);
-    ctx.fillRect(e.x + 3, e.y - 3, 3, 3);
-  });
-
-  // Player
-  ctx.save();
-  ctx.translate(player.x, player.y);
-
-  ctx.fillStyle =
-    player.invulnerable > 0 ? "#aaffff" : "#43b8ff";
-
-  ctx.beginPath();
-  ctx.arc(0, 0, player.r, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Gun
-  ctx.fillStyle = "#123b58";
-  ctx.fillRect(7, -4, 18, 8);
-
-  ctx.restore();
-
-  if (reloadTimer > 0) {
-    ctx.fillStyle = "white";
-    ctx.font = "bold 16px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("RELOADING...", W / 2, 28);
-  }
-}
-
-function update(dt) {
-  if (gameOver) return;
-
-  fireCooldown = Math.max(0, fireCooldown - dt);
-  player.invulnerable =
-    Math.max(0, player.invulnerable - dt);
-
-  // Reload
-  if (reloadTimer > 0) {
-    reloadTimer -= dt;
-
-    if (reloadTimer <= 0) {
-      const amount = Math.min(12 - ammo, reserve);
-
-      ammo += amount;
-      reserve -= amount;
-
-      document.getElementById("reload").textContent =
-        "RELOAD";
-
-      updateHUD();
-    }
-  }
-
-  // Player movement
-  let dx =
-    (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
-
-  let dy =
-    (keys.down ? 1 : 0) - (keys.up ? 1 : 0);
-
-  const length = Math.hypot(dx, dy) || 1;
-
-  player.x += dx / length * player.speed * dt;
-  player.y += dy / length * player.speed * dt;
-
-  player.x = Math.max(
-    player.r,
-    Math.min(W - player.r, player.x)
-  );
-
-  player.y = Math.max(
-    player.r,
-    Math.min(H - player.r, player.y)
-  );
-
-  // Spawn enemies
-  spawnTimer -= dt;
-
-  if (spawnTimer <= 0) {
-    spawnEnemy();
-    spawnTimer = Math.max(0.45, 1.25 - score / 500);
-  }
-
-  // Move bullets
-  bullets.forEach(b => {
-    b.x += b.vx * dt;
-    b.y += b.vy * dt;
-    b.life -= dt;
-  });
-
-  bullets = bullets.filter(b =>
-    b.life > 0 &&
-    b.x > -10 &&
-    b.x < W + 10 &&
-    b.y > -10 &&
-    b.y < H + 10
-  );
-
-  // Move enemies and collision
-  enemies.forEach(e => {
-    const dx = player.x - e.x;
-    const dy = player.y - e.y;
-    const distance = Math.hypot(dx, dy) || 1;
-
-    e.x += dx / distance * e.speed * dt;
-    e.y += dy / distance * e.speed * dt;
-
-    if (
-      distance < player.r + e.r &&
-      player.invulnerable <= 0
-    ) {
-      health = Math.max(0, health - 12);
-      player.invulnerable = 0.55;
-
-      updateHUD();
-
-      if (health <= 0) endGame();
-    }
-  });
-
-  // Bullet hits
-  bullets.forEach(b => {
-    for (const e of enemies) {
-      if (
-        e.hp > 0 &&
-        Math.hypot(b.x - e.x, b.y - e.y) < e.r + 4
-      ) {
-        e.hp--;
-        b.life = 0;
-
-        if (e.hp <= 0) {
-          e.dead = true;
-          score += 10;
-          updateHUD();
-        }
-
-        break;
-      }
-    }
-  });
-
-  enemies = enemies.filter(e => !e.dead);
-}
-
-function loop(time) {
-  const dt = Math.min((time - lastTime) / 1000 || 0, 0.04);
-  lastTime = time;
-
-  update(dt);
-  draw();
-
-  requestAnimationFrame(loop);
-}
-
-updateHUD();
-lastTime = performance.now();
-requestAnimationFrame(loop);
-</script>
-
-</body>
-</html>
+MAXBET demo • Sample match data only • No real-money betting or cash-out • Prototype build 1.0
