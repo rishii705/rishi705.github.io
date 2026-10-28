@@ -1,8 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>MAX BET | Sports Arena</title>
 
 <style>
@@ -15,7 +16,6 @@
   --muted:#91a0ad;
   --green:#31d28a;
   --gold:#f0c35b;
-  --red:#f26d75;
 }
 
 * {
@@ -26,10 +26,10 @@ body {
   margin:0;
   background:var(--bg);
   color:var(--text);
-  font:14px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  font:14px/1.5 Arial, sans-serif;
 }
 
-button,input {
+button,input,select {
   font:inherit;
 }
 
@@ -40,31 +40,25 @@ button {
   padding:10px 13px;
   background:var(--green);
   color:#062014;
-  font-weight:800;
+  font-weight:bold;
 }
 
-button.secondary {
+button:active {
+  transform:scale(.98);
+}
+
+.secondary {
   background:#24313d;
-  color:var(--text);
+  color:white;
   border:1px solid var(--line);
-}
-
-button.active {
-  outline:2px solid var(--green);
-}
-
-a {
-  color:inherit;
-  text-decoration:none;
 }
 
 .top {
   position:sticky;
   top:0;
   z-index:5;
-  background:#0b1118ed;
+  background:#0b1118;
   border-bottom:1px solid var(--line);
-  backdrop-filter:blur(12px);
 }
 
 .bar {
@@ -72,24 +66,17 @@ a {
   margin:auto;
   display:flex;
   align-items:center;
-  gap:14px;
-  padding:13px 16px;
+  gap:12px;
+  padding:13px;
 }
 
 .logo {
-  font-size:22px;
-  font-weight:950;
-  letter-spacing:1px;
-  white-space:nowrap;
+  font-size:23px;
+  font-weight:900;
 }
 
 .logo span {
   color:var(--green);
-}
-
-.tag {
-  color:var(--muted);
-  font-size:11px;
 }
 
 .grow {
@@ -98,10 +85,10 @@ a {
 
 .pill {
   border:1px solid var(--line);
-  padding:7px 10px;
   border-radius:30px;
+  padding:7px 10px;
   color:var(--muted);
-  font-size:12px;
+  font-size:11px;
 }
 
 .layout {
@@ -130,25 +117,20 @@ a {
   color:var(--muted);
   font-size:11px;
   text-transform:uppercase;
-  letter-spacing:1.3px;
   margin:12px 9px 7px;
 }
 
 .nav {
-  display:flex;
-  align-items:center;
-  gap:10px;
+  display:block;
   width:100%;
   text-align:left;
   background:transparent;
   color:var(--text);
   padding:11px;
-  border-radius:9px;
   margin:2px 0;
-  font-weight:650;
 }
 
-.nav:hover,.nav.active {
+.nav.active,.nav:hover {
   background:#1b2a32;
   color:var(--green);
 }
@@ -157,23 +139,39 @@ main {
   min-width:0;
 }
 
+.page {
+  display:block;
+}
+
+.hidden {
+  display:none!important;
+}
+
 .hero {
   padding:22px;
-  background:linear-gradient(120deg,#183a32,#121b26 68%);
+  background:linear-gradient(120deg,#183a32,#121b26);
   border:1px solid #2a5547;
   border-radius:16px;
   margin-bottom:16px;
 }
 
 .hero h1 {
-  font-size:clamp(23px,4vw,34px);
-  margin:0 0 6px;
+  font-size:30px;
+  margin:0 0 8px;
 }
 
 .hero p {
   color:#b8c8c5;
   margin:0;
-  max-width:660px;
+}
+
+.badge {
+  display:inline-block;
+  background:#23362e;
+  color:var(--green);
+  padding:4px 8px;
+  border-radius:20px;
+  font-size:10px;
 }
 
 .stats {
@@ -240,7 +238,7 @@ main {
 
 .live {
   color:var(--green);
-  font-weight:800;
+  font-weight:bold;
 }
 
 .teams {
@@ -252,22 +250,20 @@ main {
 
 .team {
   font-size:15px;
-  font-weight:800;
+  font-weight:bold;
 }
 
 .team:last-child {
   text-align:right;
 }
 
-.vs {
+.vs,.score {
   color:var(--muted);
   font-size:12px;
 }
 
 .score {
-  font-size:12px;
-  color:var(--muted);
-  margin-top:4px;
+  margin-top:5px;
 }
 
 .actions {
@@ -280,17 +276,9 @@ main {
 .actions button {
   font-size:12px;
   padding:8px 10px;
-}
-
-.pick {
   background:#1b2b32;
   color:var(--text);
   border:1px solid #345146;
-}
-
-.pick.selected {
-  border-color:var(--green);
-  color:var(--green);
 }
 
 .grid2 {
@@ -306,7 +294,7 @@ main {
   border-radius:13px;
 }
 
-.game .emoji {
+.emoji {
   font-size:26px;
 }
 
@@ -315,23 +303,7 @@ main {
 }
 
 .game p {
-  margin:0 0 12px;
   color:var(--muted);
-}
-
-.form {
-  display:grid;
-  gap:10px;
-  max-width:420px;
-}
-
-.form input,.form select {
-  width:100%;
-  padding:11px;
-  border-radius:9px;
-  border:1px solid var(--line);
-  background:#0b1118;
-  color:var(--text);
 }
 
 .notice {
@@ -343,8 +315,25 @@ main {
   margin:10px 0;
 }
 
-.muted {
-  color:var(--muted);
+.form {
+  display:grid;
+  gap:12px;
+  max-width:420px;
+}
+
+.form input,.form select {
+  display:block;
+  width:100%;
+  margin-top:5px;
+  padding:11px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:#0b1118;
+  color:white;
+}
+
+.table-wrap {
+  overflow:auto;
 }
 
 .table {
@@ -361,30 +350,13 @@ main {
 
 .table th {
   color:var(--muted);
-  font-weight:600;
-}
-
-.hidden {
-  display:none!important;
 }
 
 .footer {
-  color:var(--muted);
   text-align:center;
+  color:var(--muted);
   font-size:11px;
   padding:22px;
-}
-
-.badge {
-  font-size:10px;
-  background:#23362e;
-  color:var(--green);
-  padding:4px 7px;
-  border-radius:30px;
-}
-
-.table-wrap {
-  overflow:auto;
 }
 
 @media(max-width:760px) {
@@ -406,13 +378,9 @@ main {
   }
 
   .nav {
-    white-space:nowrap;
     width:auto;
-    padding:9px 11px;
-  }
-
-  .bar {
-    gap:9px;
+    white-space:nowrap;
+    padding:9px;
   }
 
   .tag {
@@ -440,7 +408,7 @@ main {
   }
 
   .table {
-    min-width:520px;
+    min-width:480px;
   }
 }
 </style>
@@ -451,10 +419,10 @@ main {
 <header class="top">
   <div class="bar">
     <div class="logo">MAX<span>BET</span></div>
-    <div class="tag">SPORTS • LIVE SCORES • FREE GAMES</div>
+    <div class="tag">SPORTS • SCORES • FREE GAMES</div>
     <div class="grow"></div>
     <span class="pill">DEMO MODE</span>
-    <button id="loginTop" onclick="show('account')">Sign in</button>
+    <button id="loginTop">Sign in</button>
   </div>
 </header>
 
@@ -464,31 +432,17 @@ main {
 
   <h4>Main menu</h4>
 
-  <button class="nav active" data-page="home"
-    onclick="show('home',this)">⌂ &nbsp; Home</button>
-
-  <button class="nav" data-page="cricket"
-    onclick="show('cricket',this)">🏏 &nbsp; Cricket</button>
-
-  <button class="nav" data-page="football"
-    onclick="show('football',this)">⚽ &nbsp; Football</button>
-
-  <button class="nav" data-page="games"
-    onclick="show('games',this)">🎮 &nbsp; Free games</button>
-
-  <button class="nav" data-page="predictions"
-    onclick="show('predictions',this)">📋 &nbsp; My predictions</button>
+  <button class="nav active" data-page="home">⌂ Home</button>
+  <button class="nav" data-page="cricket">🏏 Cricket</button>
+  <button class="nav" data-page="football">⚽ Football</button>
+  <button class="nav" data-page="games">🎮 Free games</button>
+  <button class="nav" data-page="predictions">📋 My predictions</button>
 
   <h4>Workspace</h4>
 
-  <button class="nav" data-page="agent"
-    onclick="show('agent',this)">🤝 &nbsp; Agent demo</button>
-
-  <button class="nav" data-page="admin"
-    onclick="show('admin',this)">👑 &nbsp; Admin demo</button>
-
-  <button class="nav" data-page="account"
-    onclick="show('account',this)">👤 &nbsp; Account</button>
+  <button class="nav" data-page="agent">🤝 Agent demo</button>
+  <button class="nav" data-page="admin">👑 Admin demo</button>
+  <button class="nav" data-page="account">👤 Account</button>
 
 </aside>
 
@@ -500,20 +454,20 @@ main {
     <span class="badge">WELCOME TO THE ARENA</span>
     <h1>Every match. Every moment.</h1>
     <p>
-      Follow sports, explore match cards, make friendly predictions
-      and play free mini-games. This demo uses virtual points only—
-      no deposits, wagering or cash-out.
+      Explore sports, make friendly predictions and play free games.
+      Virtual points only. No deposits or cash-outs.
     </p>
   </div>
 
   <div class="stats">
+
     <div class="stat">
       <small>Demo matches</small>
       <strong id="matchCount">6</strong>
     </div>
 
     <div class="stat">
-      <small>Your virtual points</small>
+      <small>Virtual points</small>
       <strong id="points">1,000</strong>
     </div>
 
@@ -521,11 +475,12 @@ main {
       <small>Predictions made</small>
       <strong id="predCount">0</strong>
     </div>
+
   </div>
 
   <div class="section-head">
     <h2>Featured matches</h2>
-    <span>Sample data • not live</span>
+    <span>Sample data only</span>
   </div>
 
   <div id="featured" class="matches"></div>
@@ -540,39 +495,47 @@ main {
     <div class="game">
       <div class="emoji">🎯</div>
       <h3>Lucky Number</h3>
-      <p>Pick a number from 1–6 and try your luck. Free to play.</p>
-      <button onclick="playNumber()">Play round</button>
+      <p>Roll a number from 1 to 6.</p>
+      <button data-action="number">Play round</button>
       <p id="numberResult" aria-live="polite"></p>
     </div>
 
     <div class="game">
       <div class="emoji">🧠</div>
       <h3>Sports Quiz</h3>
-      <p>Answer a quick sports question for virtual points.</p>
-      <button onclick="quiz()">Start quiz</button>
+      <p>Answer a quick sports question.</p>
+      <button data-action="quiz">Start quiz</button>
       <p id="quizResult" aria-live="polite"></p>
     </div>
 
   </div>
+
 </section>
 
 <section id="cricket" class="page hidden">
+
   <div class="section-head">
     <h2>🏏 Cricket</h2>
     <span>Sample fixtures</span>
   </div>
+
   <div id="cricketList" class="matches"></div>
+
 </section>
 
 <section id="football" class="page hidden">
+
   <div class="section-head">
     <h2>⚽ Football</h2>
     <span>Sample fixtures</span>
   </div>
+
   <div id="footballList" class="matches"></div>
+
 </section>
 
 <section id="games" class="page hidden">
+
   <div class="section-head">
     <h2>🎮 Free games</h2>
     <span>Virtual points only</span>
@@ -583,58 +546,58 @@ main {
     <div class="game">
       <div class="emoji">🎯</div>
       <h3>Lucky Number</h3>
-      <p>Choose a random number and see the result.</p>
-      <button onclick="playNumber()">Play round</button>
-      <p id="numberResult2"></p>
+      <p>Roll a random number.</p>
+      <button data-action="number">Play round</button>
+      <p id="numberResult2" aria-live="polite"></p>
     </div>
 
     <div class="game">
       <div class="emoji">🧠</div>
       <h3>Sports Quiz</h3>
-      <p>Answer a quick sports question.</p>
-      <button onclick="quiz()">Start quiz</button>
-      <p id="quizResult2"></p>
+      <p>Answer a football question.</p>
+      <button data-action="quiz">Start quiz</button>
+      <p id="quizResult2" aria-live="polite"></p>
     </div>
 
   </div>
+
 </section>
 
 <section id="predictions" class="page hidden">
+
   <div class="section-head">
     <h2>📋 My predictions</h2>
     <span>Saved on this device</span>
   </div>
 
   <div class="card" style="padding:15px">
-    <div id="predictionList" class="muted">
-      No predictions yet. Open a match and choose a team.
+    <div id="predictionList">
+      No predictions yet.
     </div>
   </div>
+
 </section>
 
 <section id="agent" class="page hidden">
 
   <div class="hero">
     <h1>Agent workspace</h1>
-    <p>
-      Preview-only management screen. Real user accounts and
-      secure permissions require a backend.
-    </p>
+    <p>Preview-only management dashboard.</p>
   </div>
 
   <div class="notice">
-    Demo mode: this page does not create real agents or manage
-    other people's accounts.
+    This is a demo screen. It does not manage real accounts.
   </div>
 
   <div class="stats">
+
     <div class="stat">
       <small>Sample users</small>
       <strong>24</strong>
     </div>
 
     <div class="stat">
-      <small>Sample sub-agents</small>
+      <small>Sample agents</small>
       <strong>3</strong>
     </div>
 
@@ -642,42 +605,14 @@ main {
       <small>Reports</small>
       <strong>6</strong>
     </div>
+
   </div>
 
   <div class="card" style="padding:15px">
     <h3>Sample user activity</h3>
-
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>User ID</th>
-            <th>Status</th>
-            <th>Activity</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td>MB-DEMO-001</td>
-            <td>Active</td>
-            <td>Viewed cricket</td>
-          </tr>
-
-          <tr>
-            <td>MB-DEMO-002</td>
-            <td>Active</td>
-            <td>Played free game</td>
-          </tr>
-
-          <tr>
-            <td>MB-DEMO-003</td>
-            <td>Inactive</td>
-            <td>Last seen recently</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <p>User 001 — Viewed cricket</p>
+    <p>User 002 — Played free game</p>
+    <p>User 003 — Inactive</p>
   </div>
 
 </section>
@@ -686,21 +621,18 @@ main {
 
   <div class="hero">
     <h1>Admin control center</h1>
-    <p>
-      Preview dashboard for content and demo activity.
-      No real access control is implemented in this single-file prototype.
-    </p>
+    <p>Preview dashboard for demo content.</p>
   </div>
 
   <div class="notice">
-    Important: this admin screen is a visual prototype, not a secure
-    production admin panel. Do not put real user data or passwords here.
+    This is a prototype, not a secure production admin panel.
   </div>
 
   <div class="stats">
+
     <div class="stat">
       <small>Demo users</small>
-      <strong id="adminUsers">24</strong>
+      <strong>24</strong>
     </div>
 
     <div class="stat">
@@ -709,19 +641,16 @@ main {
     </div>
 
     <div class="stat">
-      <small>Platform status</small>
-      <strong style="color:var(--green)">Demo</strong>
+      <small>Status</small>
+      <strong>Demo</strong>
     </div>
+
   </div>
 
   <div class="card" style="padding:15px">
-    <h3>Manage sample fixtures</h3>
-    <p class="muted">
-      This button refreshes the sample match cards on this page.
-    </p>
-    <button onclick="renderMatches();alert('Sample fixtures refreshed.')">
-      Refresh fixtures
-    </button>
+    <h3>Sample fixtures</h3>
+    <button data-action="refresh">Refresh fixtures</button>
+    <p id="refreshResult"></p>
   </div>
 
 </section>
@@ -736,15 +665,16 @@ main {
   <div class="card" style="padding:18px">
 
     <div class="notice">
-      This prototype stores a display name and demo predictions only
-      in your browser. It does not provide real secure login yet.
+      This profile is stored on this device only.
+      It is not a real secure login.
     </div>
 
-    <form class="form" onsubmit="saveProfile(event)">
+    <form id="profileForm" class="form">
 
       <label>
         Display name
-        <input id="displayName" maxlength="40" placeholder="Enter your name">
+        <input id="displayName" maxlength="40"
+               placeholder="Enter your name">
       </label>
 
       <label>
@@ -758,373 +688,467 @@ main {
 
       <button type="submit">Save demo profile</button>
 
-      <button type="button" class="secondary" onclick="resetDemo()">
+      <button type="button" class="secondary" id="resetButton">
         Reset demo data
       </button>
 
     </form>
 
-    <p id="profileMsg" class="muted"></p>
+    <p id="profileMsg" aria-live="polite"></p>
 
   </div>
+
 </section>
 
 <div class="footer">
-  MAXBET demo • Sample match data only • No real-money betting or cash-out • Prototype build 1.0
+  MAXBET Demo • Sample fixtures • Virtual points only • Build 2.0
 </div>
 
 </main>
 </div>
 
 <script>
-const matches = [
-  {
-    id:1,
-    sport:'Cricket',
-    league:'International • Sample fixture',
-    home:'India',
-    away:'New Zealand',
-    score:'Match preview • score not live',
-    status:'UPCOMING'
-  },
-  {
-    id:2,
-    sport:'Cricket',
-    league:'T20 • Sample fixture',
-    home:'Mumbai',
-    away:'Chennai',
-    score:'Match preview • score not live',
-    status:'UPCOMING'
-  },
-  {
-    id:3,
-    sport:'Cricket',
-    league:'ODI • Sample fixture',
-    home:'Australia',
-    away:'South Africa',
-    score:'Match preview • score not live',
-    status:'UPCOMING'
-  },
-  {
-    id:4,
-    sport:'Football',
-    league:'League • Sample fixture',
-    home:'Arsenal',
-    away:'Liverpool',
-    score:'Fixture preview • score not live',
-    status:'UPCOMING'
-  },
-  {
-    id:5,
-    sport:'Football',
-    league:'League • Sample fixture',
-    home:'Barcelona',
-    away:'Real Madrid',
-    score:'Fixture preview • score not live',
-    status:'UPCOMING'
-  },
-  {
-    id:6,
-    sport:'Football',
-    league:'League • Sample fixture',
-    home:'Bayern Munich',
-    away:'Dortmund',
-    score:'Fixture preview • score not live',
-    status:'UPCOMING'
-  }
-];
+(function () {
+  "use strict";
 
-const read = (key, fallback) => {
+  const matches = [
+    {
+      id:1,
+      sport:"Cricket",
+      league:"International",
+      home:"India",
+      away:"New Zealand",
+      score:"Sample fixture — not live"
+    },
+    {
+      id:2,
+      sport:"Cricket",
+      league:"T20",
+      home:"Mumbai",
+      away:"Chennai",
+      score:"Sample fixture — not live"
+    },
+    {
+      id:3,
+      sport:"Cricket",
+      league:"ODI",
+      home:"Australia",
+      away:"South Africa",
+      score:"Sample fixture — not live"
+    },
+    {
+      id:4,
+      sport:"Football",
+      league:"League",
+      home:"Arsenal",
+      away:"Liverpool",
+      score:"Sample fixture — not live"
+    },
+    {
+      id:5,
+      sport:"Football",
+      league:"League",
+      home:"Barcelona",
+      away:"Real Madrid",
+      score:"Sample fixture — not live"
+    },
+    {
+      id:6,
+      sport:"Football",
+      league:"League",
+      home:"Bayern Munich",
+      away:"Dortmund",
+      score:"Sample fixture — not live"
+    }
+  ];
+
+  function readData(key, fallback) {
+    try {
+      const value = localStorage.getItem(key);
+      return value === null ? fallback : JSON.parse(value);
+    } catch (error) {
+      return fallback;
+    }
+  }
+
+  let predictions = readData("mb_predictions", []);
+  let profile = readData("mb_profile", {
+    name:"",
+    role:"User"
+  });
+
+  let points = 1000;
+
   try {
-    return JSON.parse(localStorage.getItem(key)) ?? fallback;
-  } catch {
-    return fallback;
-  }
-};
-
-let predictions = read('mb_predictions', []);
-let profile = read('mb_profile', {
-  name:'',
-  role:'User'
-});
-let points = Number(localStorage.getItem('mb_points') ?? 1000);
-
-function save() {
-  localStorage.setItem(
-    'mb_predictions',
-    JSON.stringify(predictions)
-  );
-
-  localStorage.setItem('mb_points', String(points));
-  updateStats();
-}
-
-function show(id, btn) {
-  document.querySelectorAll('.page').forEach(page => {
-    page.classList.add('hidden');
-  });
-
-  document.getElementById(id).classList.remove('hidden');
-
-  document.querySelectorAll('.nav').forEach(nav => {
-    nav.classList.toggle('active', nav.dataset.page === id);
-  });
-
-  if (btn) {
-    btn.classList.add('active');
+    const savedPoints = localStorage.getItem("mb_points");
+    if (savedPoints !== null && Number.isFinite(Number(savedPoints))) {
+      points = Number(savedPoints);
+    }
+  } catch (error) {
+    points = 1000;
   }
 
-  if (id === 'predictions') {
+  function saveData() {
+    try {
+      localStorage.setItem(
+        "mb_predictions",
+        JSON.stringify(predictions)
+      );
+
+      localStorage.setItem("mb_points", String(points));
+    } catch (error) {
+      console.warn("Browser storage unavailable.");
+    }
+
+    updateStats();
+  }
+
+  function showPage(id) {
+    document.querySelectorAll(".page").forEach(function (page) {
+      page.classList.toggle("hidden", page.id !== id);
+    });
+
+    document.querySelectorAll(".nav").forEach(function (button) {
+      button.classList.toggle("active", button.dataset.page === id);
+    });
+
+    if (id === "predictions") {
+      renderPredictions();
+    }
+
+    if (id === "account") {
+      document.getElementById("displayName").value = profile.name || "";
+      document.getElementById("role").value = profile.role || "User";
+    }
+  }
+
+  function makeMatchCard(match) {
+    const article = document.createElement("article");
+    article.className = "match";
+
+    const top = document.createElement("div");
+    top.className = "match-top";
+
+    const league = document.createElement("span");
+    league.textContent = match.sport + " • " + match.league;
+
+    const status = document.createElement("span");
+    status.className = "live";
+    status.textContent = "UPCOMING";
+
+    top.append(league, status);
+
+    const teams = document.createElement("div");
+    teams.className = "teams";
+
+    const home = document.createElement("div");
+
+    const homeName = document.createElement("div");
+    homeName.className = "team";
+    homeName.textContent = match.home;
+
+    const homeType = document.createElement("div");
+    homeType.className = "score";
+    homeType.textContent = match.sport === "Cricket"
+      ? "Cricket team"
+      : "Football club";
+
+    home.append(homeName, homeType);
+
+    const vs = document.createElement("div");
+    vs.className = "vs";
+    vs.textContent = "VS";
+
+    const away = document.createElement("div");
+
+    const awayName = document.createElement("div");
+    awayName.className = "team";
+    awayName.textContent = match.away;
+    awayName.style.textAlign = "right";
+
+    const awayType = document.createElement("div");
+    awayType.className = "score";
+    awayType.textContent = match.sport === "Cricket"
+      ? "Cricket team"
+      : "Football club";
+    awayType.style.textAlign = "right";
+
+    away.append(awayName, awayType);
+    teams.append(home, vs, away);
+
+    const score = document.createElement("div");
+    score.className = "score";
+    score.textContent = match.score;
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    [match.home, match.away].forEach(function (teamName) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = "Predict " + teamName;
+
+      button.addEventListener("click", function () {
+        makePrediction(match.id, teamName);
+      });
+
+      actions.appendChild(button);
+    });
+
+    article.append(top, teams, score, actions);
+
+    return article;
+  }
+
+  function renderMatches() {
+    const featured = document.getElementById("featured");
+    const cricketList = document.getElementById("cricketList");
+    const footballList = document.getElementById("footballList");
+
+    featured.replaceChildren();
+    cricketList.replaceChildren();
+    footballList.replaceChildren();
+
+    matches.slice(0, 3).forEach(function (match) {
+      featured.appendChild(makeMatchCard(match));
+    });
+
+    matches.filter(function (match) {
+      return match.sport === "Cricket";
+    }).forEach(function (match) {
+      cricketList.appendChild(makeMatchCard(match));
+    });
+
+    matches.filter(function (match) {
+      return match.sport === "Football";
+    }).forEach(function (match) {
+      footballList.appendChild(makeMatchCard(match));
+    });
+
+    document.getElementById("matchCount").textContent = matches.length;
+  }
+
+  function makePrediction(id, team) {
+    const match = matches.find(function (item) {
+      return item.id === id;
+    });
+
+    if (!match) {
+      return;
+    }
+
+    if (predictions.some(function (item) {
+      return item.id === id;
+    })) {
+      alert("You already made a demo prediction for this match.");
+      return;
+    }
+
+    predictions.unshift({
+      id:id,
+      sport:match.sport,
+      match:match.home + " vs " + match.away,
+      team:team,
+      at:new Date().toLocaleString()
+    });
+
+    saveData();
+
+    alert("Demo prediction saved: " + team);
+  }
+
+  function renderPredictions() {
+    const container = document.getElementById("predictionList");
+    container.replaceChildren();
+
+    if (!predictions.length) {
+      container.textContent =
+        "No predictions yet. Open a match and choose a team.";
+      return;
+    }
+
+    const table = document.createElement("table");
+    table.className = "table";
+
+    const head = document.createElement("thead");
+    head.innerHTML =
+      "<tr><th>Sport</th><th>Match</th><th>Your pick</th><th>Saved</th></tr>";
+
+    const body = document.createElement("tbody");
+
+    predictions.forEach(function (item) {
+      const row = document.createElement("tr");
+
+      [item.sport, item.match, item.team, item.at].forEach(function (value) {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.appendChild(cell);
+      });
+
+      body.appendChild(row);
+    });
+
+    table.append(head, body);
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "table-wrap";
+    wrapper.appendChild(table);
+
+    container.appendChild(wrapper);
+  }
+
+  function updateStats() {
+    document.getElementById("points").textContent =
+      Number(points).toLocaleString();
+
+    document.getElementById("predCount").textContent =
+      predictions.length;
+  }
+
+  function playNumber() {
+    const number = Math.floor(Math.random() * 6) + 1;
+
+    const message = "You rolled " + number + "! Free demo round.";
+
+    ["numberResult", "numberResult2"].forEach(function (id) {
+      const element = document.getElementById(id);
+
+      if (element) {
+        element.textContent = message;
+      }
+    });
+  }
+
+  function quiz() {
+    const answer = prompt(
+      "SPORTS QUIZ\n\n" +
+      "How many players are normally on the pitch for one football team?\n\n" +
+      "Type your answer (a number):"
+    );
+
+    let message;
+
+    if (answer === null) {
+      message = "Quiz cancelled. Try again whenever you like.";
+    } else if (answer.trim() === "11") {
+      points += 10;
+      saveData();
+      message = "Correct! You earned 10 virtual points.";
+    } else {
+      message = "Not quite. The correct answer is 11.";
+    }
+
+    ["quizResult", "quizResult2"].forEach(function (id) {
+      const element = document.getElementById(id);
+
+      if (element) {
+        element.textContent = message;
+      }
+    });
+  }
+
+  function saveProfile(event) {
+    event.preventDefault();
+
+    profile = {
+      name:document.getElementById("displayName").value.trim(),
+      role:document.getElementById("role").value
+    };
+
+    try {
+      localStorage.setItem("mb_profile", JSON.stringify(profile));
+    } catch (error) {
+      console.warn("Browser storage unavailable.");
+    }
+
+    document.getElementById("profileMsg").textContent =
+      "Demo profile saved on this device.";
+
+    document.getElementById("loginTop").textContent =
+      profile.name ? profile.name.split(" ")[0] : "Sign in";
+  }
+
+  function resetDemo() {
+    const confirmed = confirm(
+      "Reset demo profile, predictions and virtual points?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      localStorage.removeItem("mb_predictions");
+      localStorage.removeItem("mb_profile");
+      localStorage.removeItem("mb_points");
+    } catch (error) {
+      console.warn("Browser storage unavailable.");
+    }
+
+    predictions = [];
+    profile = {name:"", role:"User"};
+    points = 1000;
+
+    document.getElementById("displayName").value = "";
+    document.getElementById("role").value = "User";
+    document.getElementById("profileMsg").textContent = "Demo data reset.";
+    document.getElementById("loginTop").textContent = "Sign in";
+
+    saveData();
     renderPredictions();
   }
 
-  if (id === 'account') {
-    document.getElementById('displayName').value = profile.name || '';
-    document.getElementById('role').value = profile.role || 'User';
-  }
-}
-
-function card(match) {
-  return `
-    <article class="match">
-
-      <div class="match-top">
-        <span>${match.sport} • ${match.league}</span>
-        <span class="live">${match.status}</span>
-      </div>
-
-      <div class="teams">
-
-        <div>
-          <div class="team">${match.home}</div>
-          <div class="score">
-            ${match.sport === 'Cricket' ? 'Cricket team' : 'Football club'}
-          </div>
-        </div>
-
-        <div class="vs">VS</div>
-
-        <div>
-          <div class="team">${match.away}</div>
-          <div class="score" style="text-align:right">
-            ${match.sport === 'Cricket' ? 'Cricket team' : 'Football club'}
-          </div>
-        </div>
-
-      </div>
-
-      <div class="score" style="margin-top:10px">
-        ${match.score}
-      </div>
-
-      <div class="actions">
-        <button class="pick" onclick="predict(${match.id}, '${match.home}')">
-          Predict ${match.home}
-        </button>
-
-        <button class="pick" onclick="predict(${match.id}, '${match.away}')">
-          Predict ${match.away}
-        </button>
-      </div>
-
-    </article>
-  `;
-}
-
-function renderMatches() {
-  document.getElementById('featured').innerHTML =
-    matches.slice(0, 3).map(card).join('');
-
-  document.getElementById('cricketList').innerHTML =
-    matches
-      .filter(match => match.sport === 'Cricket')
-      .map(card)
-      .join('');
-
-  document.getElementById('footballList').innerHTML =
-    matches
-      .filter(match => match.sport === 'Football')
-      .map(card)
-      .join('');
-
-  document.getElementById('matchCount').textContent = matches.length;
-}
-
-function predict(id, team) {
-  const match = matches.find(item => item.id === id);
-
-  if (predictions.some(item => item.id === id)) {
-    alert('You have already made a demo prediction for this match.');
-    return;
-  }
-
-  predictions.unshift({
-    id,
-    sport:match.sport,
-    match:match.home + ' vs ' + match.away,
-    team,
-    at:new Date().toLocaleString()
+  /* Navigation buttons */
+  document.querySelectorAll(".nav").forEach(function (button) {
+    button.addEventListener("click", function () {
+      showPage(button.dataset.page);
+    });
   });
 
-  save();
-
-  alert(
-    'Demo prediction saved: ' + team +
-    '. No money or wagering involved.'
-  );
-}
-
-function renderPredictions() {
-  const element = document.getElementById('predictionList');
-
-  if (!predictions.length) {
-    element.textContent =
-      'No predictions yet. Open a match and choose a team.';
-    return;
-  }
-
-  element.innerHTML = `
-    <div class="table-wrap">
-      <table class="table">
-
-        <thead>
-          <tr>
-            <th>Sport</th>
-            <th>Match</th>
-            <th>Your pick</th>
-            <th>Saved</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          ${predictions.map(item => `
-            <tr>
-              <td>${item.sport}</td>
-              <td>${item.match}</td>
-              <td>${item.team}</td>
-              <td>${item.at}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-
-      </table>
-    </div>
-  `;
-}
-
-function updateStats() {
-  document.getElementById('points').textContent =
-    Number(points).toLocaleString();
-
-  document.getElementById('predCount').textContent =
-    predictions.length;
-}
-
-function playNumber() {
-  const number = Math.floor(Math.random() * 6) + 1;
-
-  const message =
-    'You rolled ' + number + '. This is a free demo round.';
-
-  ['numberResult', 'numberResult2'].forEach(id => {
-    const element = document.getElementById(id);
-
-    if (element) {
-      element.textContent = message;
-    }
+  /* Login button opens the demo account page */
+  document.getElementById("loginTop").addEventListener("click", function () {
+    showPage("account");
   });
-}
 
-function quiz() {
-  const correct = confirm(
-    'Sports quiz: How many players from one football team ' +
-    'are normally on the pitch at kick-off?\n\n' +
-    'Press OK for 11, Cancel to try again.'
+  /* Game buttons */
+  document.querySelectorAll('[data-action="number"]').forEach(function (button) {
+    button.addEventListener("click", playNumber);
+  });
+
+  document.querySelectorAll('[data-action="quiz"]').forEach(function (button) {
+    button.addEventListener("click", quiz);
+  });
+
+  /* Admin demo refresh */
+  document.querySelectorAll('[data-action="refresh"]').forEach(function (button) {
+    button.addEventListener("click", function () {
+      renderMatches();
+
+      document.getElementById("refreshResult").textContent =
+        "Sample fixtures refreshed successfully.";
+    });
+  });
+
+  /* Account buttons */
+  document.getElementById("profileForm").addEventListener(
+    "submit",
+    saveProfile
   );
 
-  const message = correct
-    ? 'Correct! +10 virtual points.'
-    : 'Answer: 11 players. Try again next time.';
+  document.getElementById("resetButton").addEventListener(
+    "click",
+    resetDemo
+  );
 
-  if (correct) {
-    points += 10;
-    save();
-  }
+  /* Initial page setup */
+  renderMatches();
+  updateStats();
 
-  ['quizResult', 'quizResult2'].forEach(id => {
-    const element = document.getElementById(id);
+  document.getElementById("loginTop").textContent =
+    profile.name ? profile.name.split(" ")[0] : "Sign in";
 
-    if (element) {
-      element.textContent = message;
-    }
-  });
-}
-
-function saveProfile(event) {
-  if (event && event.preventDefault) {
-    event.preventDefault();
-  }
-
-  const nameElement = document.getElementById('displayName');
-  const roleElement = document.getElementById('role');
-
-  profile = {
-    name:nameElement.value.trim(),
-    role:roleElement.value
-  };
-
-  localStorage.setItem('mb_profile', JSON.stringify(profile));
-
-  document.getElementById('profileMsg').textContent =
-    'Demo profile saved on this device.';
-
-  document.getElementById('loginTop').textContent =
-    profile.name ? profile.name.split(' ')[0] : 'Sign in';
-}
-
-function resetDemo() {
-  if (!confirm(
-    'Reset this browser’s demo profile, predictions and virtual points?'
-  )) {
-    return;
-  }
-
-  localStorage.removeItem('mb_predictions');
-  localStorage.removeItem('mb_profile');
-  localStorage.removeItem('mb_points');
-
-  predictions = [];
-  profile = {
-    name:'',
-    role:'User'
-  };
-  points = 1000;
-
-  save();
-
-  document.getElementById('displayName').value = '';
-  document.getElementById('role').value = 'User';
-  document.getElementById('loginTop').textContent = 'Sign in';
-  document.getElementById('profileMsg').textContent = 'Demo data reset.';
-
-  renderPredictions();
-}
-
-renderMatches();
-updateStats();
-
-document.getElementById('loginTop').textContent =
-  profile.name ? profile.name.split(' ')[0] : 'Sign in';
+})();
 </script>
 
-</body>
-</html>
-
-renderMatches();
-updateStats();
-
-document.getElementById('loginTop').textContent =
-  profile.name ? profile.name.split(' ')[0] : 'Sign in';
-</script>
 </body>
 </html>
